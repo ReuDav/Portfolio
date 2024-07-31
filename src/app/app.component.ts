@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
@@ -6,9 +6,13 @@ import { RouterOutlet } from '@angular/router';
   standalone: true,
   imports: [RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.sass'
+  styleUrls: ['./app.component.sass']
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
   title = 'PortfolioPage';
-  outerWidth = window?.outerHeight;
+  outerHeight: number | undefined;
+
+  ngAfterViewInit(): void {
+    this.outerHeight = window.outerHeight;
+  }
 }
