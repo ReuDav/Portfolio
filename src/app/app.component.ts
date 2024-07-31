@@ -10,9 +10,12 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent implements AfterViewInit {
   title = 'PortfolioPage';
-  outerHeight: number | undefined;
+  bottomUIHeight: number | undefined;
 
   ngAfterViewInit(): void {
-    this.outerHeight = window.outerHeight;
+    const layoutViewportHeight = window.innerHeight;
+    const visualViewportHeight = window.visualViewport ? window.visualViewport.height : layoutViewportHeight;
+
+    this.bottomUIHeight = layoutViewportHeight - visualViewportHeight;
   }
 }
