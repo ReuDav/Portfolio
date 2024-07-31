@@ -15,23 +15,34 @@ export class AppComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     // Initial calculation with a slight delay
     setTimeout(() => {
-      this.calculateBottomUIHeight();
+      this.calculateUIHeights();
     }, 100); // Adjust delay as needed
   }
 
   @HostListener('window:resize')
   @HostListener('window:scroll')
   onResizeOrScroll() {
-    this.calculateBottomUIHeight();
+    this.calculateUIHeights();
   }
 
-  calculateBottomUIHeight() {
+  calculateUIHeights() {
+    // Layout viewport height
     const layoutViewportHeight = window.innerHeight;
+
+    // Visual viewport height (if available, otherwise fall back to layout viewport height)
     const visualViewportHeight = window.visualViewport ? window.visualViewport.height : layoutViewportHeight;
 
+    // Calculate the bottom UI height
     this.bottomUIHeight = layoutViewportHeight - visualViewportHeight;
-    alert('Layout Viewport Height:' + layoutViewportHeight);
-    alert('Visual Viewport Height:' + visualViewportHeight);
-    alert('Calculated Bottom UI Height: ' + this.bottomUIHeight);
+
+    // Calculate the full browser chrome height
+    const outerHeight = window.outerHeight;
+    const chromeHeight = outerHeight - layoutViewportHeight;
+
+    // Display alerts with calculated values
+    alert('Layout Viewport Height: ' + layoutViewportHeight + 'px');
+    alert('Visual Viewport Height: ' + visualViewportHeight + 'px');
+    alert('Calculated Bottom UI Height: ' + this.bottomUIHeight + 'px');
+    alert('Browser Chrome Height (Top Menu + UI): ' + chromeHeight + 'px');
   }
 }
