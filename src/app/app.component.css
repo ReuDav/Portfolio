@@ -1,0 +1,63 @@
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box;
+}
+.container {
+  font-family: Inter, sans-serif;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  color: black;
+
+  & a {
+    color: inherit;
+  }
+  & aside, main {
+    padding: 24px;
+    & .title {
+      font-size: 24px;
+      line-height: 24px;
+    }
+    & small {
+      font-size: 1em;
+      color: darkgray;
+      line-height: 16px;
+    }
+    & ul {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+  }
+  & aside {
+    color: white;
+    background: darkslategrey;
+    & .name {
+      text-align: center;
+    }
+    & .avatar {
+      border-radius: 50%;
+      max-width: 50%;
+      display: block;
+      margin-inline: auto;
+      aspect-ratio: 1 / 1;
+    }
+    & .contacts {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+  }
+  & .summary {
+    & * {
+      line-height: 16px;
+    }
+    & h1 {
+      font-size: 20px;
+    }
+    & h2 {
+      font-size: 24px;
+    }
+  }
+}
