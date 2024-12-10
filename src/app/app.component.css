@@ -3,6 +3,10 @@ html, body {
   padding: 0 !important;
   box-sizing: border-box;
 }
+strong {
+  font-weight: bolder !important;
+  font-size: 18px !important;
+}
 .container {
   font-family: Inter, sans-serif;
   display: grid;
@@ -28,6 +32,10 @@ html, body {
       display: flex;
       flex-wrap: wrap;
       gap: 16px;
+
+      & li {
+        line-height: 24px;
+      }
     }
   }
   & aside {
@@ -37,6 +45,7 @@ html, body {
       text-align: center;
     }
     & .avatar {
+      object-fit: cover;
       border-radius: 50%;
       max-width: 50%;
       display: block;
