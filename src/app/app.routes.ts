@@ -1,15 +1,15 @@
 import { Routes } from '@angular/router';
+import { DefaultComponent } from './default/default.component';
 import { HuComponent } from './hu/hu.component';
-import { AppComponent } from './app.component';
 
 export const routes: Routes = [
   {
-    path: 'hu',
-    component: HuComponent,
+    path: '',
+    component: DefaultComponent,
   },
   {
-    path: '',
-    component: AppComponent,
+    path: 'hu',
+    component: HuComponent,
   },
   {
     path: '**',
