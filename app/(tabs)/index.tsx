@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Button, Alert, Platform } from 'react-native';
 import type { SortableGridDragEndParams, SortableGridRenderItem } from 'react-native-sortables';
 import Sortable from 'react-native-sortables';
 import { useRouter } from 'expo-router';
-import AsyncStorage from '@react-native-async-storage/async-storage'; 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import LoadingScreen from './loading';
 import "@/global.css";
 import CookiePopup from "@/components/cookies";
@@ -206,6 +206,7 @@ export default function Grid() {
       USED_NUMBERS = Array.from(numberSet);
       await saveValue("USED_NUMBERS", USED_NUMBERS);
 
+      // ✅ Ha ez volt az utolsó (3.) feladat:
       if (USED_NUMBERS.length >= SOLUTION.length) {
         try {
           const timestamp = new Date().toISOString();
@@ -228,8 +229,14 @@ export default function Grid() {
           const result = await response.json();
           console.log('✅ Összes feladat elküldve:', result);
 
-          Alert.alert('🎉 Kész!', 'Minden feladatot teljesítettél!');
-          router.push('/finished');
+          Alert.alert(
+            '🎉 Kész!',
+            'Minden feladatot teljesítetted! Kérjük, értékeld a kvízt röviden.'
+          );
+
+          // 🔁 Ide irányít át először — FEEDBACK oldalra
+          router.push('/feedback');
+          return;
         } catch (err) {
           console.error('❌ Hiba a fetch során:', err);
           Alert.alert('Hiba', 'Nem sikerült elküldeni az adatokat.');
