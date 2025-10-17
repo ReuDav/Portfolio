@@ -37,6 +37,7 @@ export default function Babgulyas() {
   const [lockedItems, setLockedItems] = useState<string[]>([]);
   const [incorrectItems, setIncorrectItems] = useState<string[]>([]);
   const [initialized, setInitialized] = useState(false);
+  const [loading, setLoading] = useState(false); // 🔹 új state
 
   useEffect(() => {
     const randomized = RandomizeArray(SOLUTION[0]);
@@ -63,7 +64,7 @@ export default function Babgulyas() {
 
       return (
         <TouchableOpacity
-          disabled={isLocked} // 🔒 Teljesen letiltjuk az interakciót
+          disabled={isLocked}
           activeOpacity={1}
           style={[
             styles.card,
@@ -103,7 +104,8 @@ export default function Babgulyas() {
     // ✅ ha minden jó, automatikusan tovább
     if (allLocked.length === correctOrder.length) {
       try {
-        // 🔹 Lekérjük a kérdőív válaszokat
+        setLoading(true); // ⏳ API-kérés indul
+
         const quizAnswers = await AsyncStorage.getItem("QUIZ_ANSWERS");
         const quizScore = await AsyncStorage.getItem("QUIZ_SCORE");
         const quizResult = await AsyncStorage.getItem("QUIZ_RESULT");
@@ -132,18 +134,21 @@ export default function Babgulyas() {
 
         if (!res.ok) throw new Error(`Fetch error: ${res.statusText}`);
 
-        console.log("✅ Sikeres mentés:", await res.json());
+        const response = await res.json();
+        console.log("✅ Sikeres mentés:", response);
 
         Alert.alert("🎉 Kész!", "Gratulálunk! Minden lépés helyes!");
         setTimeout(() => router.push("/feedback"), 1500);
       } catch (error) {
         console.error("❌ Hiba az adatküldésnél:", error);
         Alert.alert("Hiba", "Nem sikerült elküldeni az eredményt.");
+      } finally {
+        setLoading(false); // ✅ API vége
       }
     }
   };
 
-  if (!initialized) return <LoadingScreen />;
+  if (!initialized || loading) return <LoadingScreen />; // 🔹 Ha API fut, mutatjuk a töltést
 
   return (
     <SafeAreaView className="flex-1 bg-neutral-100 dark:bg-neutral-900">
