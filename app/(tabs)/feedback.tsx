@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useRouter } from 'expo-router'; // 👈 hozzáadva a router import
-import { FaStar } from 'react-icons/fa'; // 🎨 szebb csillag ikonok
-
+import { FontAwesome } from '@expo/vector-icons';
 const MAX_CHAR_COUNT = 250;
 
 const Feedback = () => {
@@ -76,20 +75,19 @@ const Feedback = () => {
       {/* 🌟 Csillag értékelés */}
       <div style={{ marginBottom: '1.5rem' }}>
         {[1, 2, 3, 4, 5].map((n) => (
-          <FaStar
-            key={n}
-            onClick={() => setStarCount(n)}
-            onMouseEnter={() => setHoveredStar(n)}
-            onMouseLeave={() => setHoveredStar(null)}
-            style={{
-              cursor: 'pointer',
-              fontSize: '2.2rem',
-              margin: '0 4px',
-              transition: 'transform 0.2s, color 0.2s',
-              transform: hoveredStar === n ? 'scale(1.3)' : 'scale(1)',
-              color: n <= (hoveredStar ?? starCount) ? '#ffc107' : '#ccc',
-            }}
-          />
+          <FontAwesome
+  name="star"
+  size={32}
+  color={n <= (hoveredStar ?? starCount) ? '#ffc107' : '#ccc'}
+  onPress={() => setStarCount(n)}
+  onMouseEnter={() => setHoveredStar(n)}
+  onMouseLeave={() => setHoveredStar(null)}
+  style={{
+    marginHorizontal: 4,
+    transform: [{ scale: hoveredStar === n ? 1.3 : 1 }],
+  }}
+/>
+
         ))}
       </div>
 
