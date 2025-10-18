@@ -266,6 +266,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   modalButtonText: {
+    color: '#fafafa',
     fontWeight: '700',
     textAlign: 'center',
     fontSize: 16,
