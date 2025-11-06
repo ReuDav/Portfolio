@@ -1,4 +1,4 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { DarkTheme, DefaultTheme, ThemeProvider, useNavigationContainerRef } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -6,15 +6,16 @@ import 'react-native-reanimated';
 import { useFonts } from 'expo-font';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { HeaderTitle } from '@react-navigation/elements';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CookiePopup from '@/components/cookies';
 import * as SplashScreen from 'expo-splash-screen';
 
-
 export default function RootLayout() {
   const colorScheme = useColorScheme();
+  const navigationRef = useNavigationContainerRef();
+  const routeNameRef = useRef<string | null>(null);
 
   const [fontsLoaded] = useFonts({
     'Inter-Regular': require('@/assets/fonts/Inter-Regular.ttf'),
@@ -42,7 +43,7 @@ export default function RootLayout() {
     })();
   }, []);
 
-  // 🔹 Elfogadás kezelése
+  // 🔹 Cookie elfogadás kezelése
   const handleAcceptCookies = async () => {
     try {
       await AsyncStorage.setItem('cookies_accepted', JSON.stringify(true));
@@ -52,25 +53,54 @@ export default function RootLayout() {
     }
   };
 
-  // 🔹 Popup megjelenítése, ha még nem fogadta el
+  // 🔁 Automatikus log minden navigációnál
+  useEffect(() => {
+    const sendVisitLog = async (route: string) => {
+      try {
+        await fetch(`https://api.legyelinformatikus.hu/?page=${encodeURIComponent(route)}`);
+      } catch (err) {
+        console.error("❌ Visit log error:", err);
+      }
+    };
+
+    const logOnReady = () => {
+      const route = navigationRef.getCurrentRoute()?.name ?? 'unknown';
+      routeNameRef.current = route;
+      sendVisitLog(route);
+    };
+
+    const logOnChange = () => {
+      const currentRoute = navigationRef.getCurrentRoute()?.name ?? 'unknown';
+      if (routeNameRef.current !== currentRoute) {
+        routeNameRef.current = currentRoute;
+        sendVisitLog(currentRoute);
+      }
+    };
+
+    const unsubscribe = navigationRef.addListener('state', logOnChange);
+
+    return () => {
+      unsubscribe();
+    };
+  }, [navigationRef]);
+
   const shouldShowPopup = cookiesAccepted === false;
 
   return (
     <GestureHandlerRootView style={styles.root}>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <View style={styles.container}>
-  <HeaderTitle />
-  <Stack
-    screenOptions={{
-      headerBackVisible: false,
-      gestureEnabled: false,
-    }}
-  >
-    <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-  </Stack>
-  <StatusBar style="auto" />
-</View>
-
+          <HeaderTitle />
+          <Stack
+            screenOptions={{
+              headerBackVisible: false,
+              gestureEnabled: false,
+            }}
+          >
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          </Stack>
+          <StatusBar style="auto" />
+        </View>
 
         {shouldShowPopup && (
           <View style={styles.popupContainer}>

@@ -23,7 +23,7 @@ const Feedback = () => {
 
     setSubmitting(true);
     try {
-      const response = await fetch('https://weiss-toborzas-api.fly.dev/api/add-feedback', {
+      const response = await fetch('https://api.legyelinformatikus.hu/api/add-feedback', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

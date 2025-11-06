@@ -126,7 +126,7 @@ export default function Babgulyas() {
 
         console.log("📦 Küldés:", payload);
 
-        const res = await fetch("https://weiss-toborzas-api.fly.dev/api/quiz-solution", {
+        const res = await fetch("https://api.legyelinformatikus.hu/api/quiz-solution", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
