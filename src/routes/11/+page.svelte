@@ -1,54 +1,59 @@
 <script>
+	// Segédfüggvény: biztosítja, hogy a szóközök és magyar ékezetek érvényes URL-t kapjanak
+	function getFileUrl(folder, fileName) {
+		return `/docs/${folder}/${encodeURIComponent(fileName)}`;
+	}
+
 	const documents = [
 		{
-			id: 'crud-ppt',
+			id: 'crud-pptx',
 			type: 'PPT',
 			title: 'MySQL CRUD',
-			subtitle: 'Prezentáció: Create, Read, Update, Delete műveletek',
-			fileName: 'MySQL CRUD.pptx', // Ha .ppt kiterjesztésű, írd át .ppt-re
-			path: '/docs/11/MySQL CRUD.pptx'
+			subtitle: 'Prezentáció: Adatbázis-műveletek összefoglalása',
+			fileName: 'MySQL CRUD.pptx',
+			folder: '11'
 		},
 		{
 			id: 'crud-pdf',
 			type: 'PDF',
 			title: 'MySQL CRUD Parancsok és Lehetőségek',
-			subtitle: 'Részletes segédlet és szintaxis a CRUD utasításokhoz',
+			subtitle: 'Részletes szintaxis és példák (INSERT, SELECT, UPDATE, DELETE)',
 			fileName: 'MySQL CRUD Parancsok és Lehetőségek.pdf',
-			path: '/docs/11/MySQL CRUD Parancsok és Lehetőségek.pdf'
+			folder: '11'
 		},
 		{
 			id: 'join',
 			type: 'PDF',
 			title: 'MySQL JOIN Műveletek és Halmazelmélet',
-			subtitle: 'Táblák összekapcsolása, relációk és halmazműveletek',
+			subtitle: 'Táblák összekapcsolása, relációk és halmazok',
 			fileName: 'MySQL JOIN Műveletek és Halmazelmélet.pdf',
-			path: '/docs/11/MySQL JOIN Műveletek és Halmazelmélet.pdf'
-		},
-		{
-			id: 'aggregator',
-			type: 'PDF',
-			title: 'SQL Aggregátor Függvények',
-			subtitle: 'COUNT, SUM, AVG, MIN, MAX és a GROUP BY záradék',
-			fileName: 'SQL Aggregátor Függvények.pdf',
-			path: '/docs/11/SQL Aggregátor Függvények.pdf'
+			folder: '11'
 		},
 		{
 			id: 'rendezes-szures',
 			type: 'PDF',
 			title: 'SQL Adatrendezés és Szűrés Haladóknak',
-			subtitle: 'Komplex feltételek, WHERE záradék, ORDER BY és LIMIT',
+			subtitle: 'Komplex feltételkezelés, ORDER BY és szűrések',
 			fileName: 'SQL Adatrendezés és Szűrés Haladóknak.pdf',
-			path: '/docs/11/SQL Adatrendezés és Szűrés Haladóknak.pdf'
+			folder: '11'
+		},
+		{
+			id: 'aggregator',
+			type: 'PDF',
+			title: 'SQL Aggregátor Függvények',
+			subtitle: 'COUNT, SUM, AVG és a csoportosítás logikája',
+			fileName: 'SQL Aggregátor Függvények.pdf',
+			folder: '11'
 		}
 	];
 
-	// Alapértelmezetten kiválasztott dokumentum (az első PDF a közvetlen előnézethez)
+	// Alapértelmezetten kiválasztott tananyag (az első PDF az azonnali előnézethez)
 	let selectedDoc = $state(documents[1]);
 </script>
 
 <div class="container">
 	<header class="page-header">
-		<span class="badge">Adatbázis-kezelés</span>
+		<span class="badge">11. Évfolyam</span>
 		<h1>MySQL és SQL Tananyagok</h1>
 		<p class="subtitle">Diasorok, prezentációk és letölthető segédletek</p>
 	</header>
@@ -59,6 +64,7 @@
 			<h2>Tananyagok listája ({documents.length})</h2>
 			<div class="cards">
 				{#each documents as doc}
+					{@const fileUrl = getFileUrl(doc.folder, doc.fileName)}
 					<div class="doc-card {selectedDoc.id === doc.id ? 'active-card' : ''}">
 						<div class="doc-info">
 							<div class="card-header">
@@ -79,7 +85,7 @@
 
 							<a 
 								class="btn btn-primary" 
-								href={doc.path} 
+								href={fileUrl} 
 								download={doc.fileName}
 							>
 								⬇ Letöltés
@@ -92,13 +98,14 @@
 
 		<!-- BEÁGYAZOTT MEGJELENÍTŐ -->
 		<section class="viewer-section">
+			{@const currentUrl = getFileUrl(selectedDoc.folder, selectedDoc.fileName)}
 			<div class="viewer-header">
 				<div class="viewer-title">
 					<span class="preview-label">Kiválasztott tananyag:</span>
 					<strong>{selectedDoc.title}</strong>
 				</div>
 				<a 
-					href={selectedDoc.path} 
+					href={currentUrl} 
 					target="_blank" 
 					rel="noopener noreferrer" 
 					class="link-external"
@@ -110,7 +117,7 @@
 			<div class="viewer-wrapper">
 				{#if selectedDoc.type === 'PDF'}
 					<iframe
-						src="{encodeURI(selectedDoc.path)}#toolbar=1&view=FitH"
+						src="{currentUrl}#toolbar=1&view=FitH"
 						title={selectedDoc.title}
 						class="pdf-frame"
 					></iframe>
@@ -120,11 +127,11 @@
 						<h3>PowerPoint Prezentáció</h3>
 						<p>{selectedDoc.fileName}</p>
 						<p class="ppt-hint">
-							A prezentáció formátum közvetlenül nem ágyazható be a böngészőbe. Kattints a letöltés gombra a megnyitáshoz!
+							A böngészők a prezentáció formátumot közvetlenül nem ágyazzák be. Kattints a gombra a letöltéshez!
 						</p>
 						<a 
 							class="btn btn-primary" 
-							href={selectedDoc.path} 
+							href={currentUrl} 
 							download={selectedDoc.fileName}
 						>
 							⬇ Prezentáció letöltése
@@ -178,7 +185,6 @@
 		align-items: start;
 	}
 
-	/* Lista oldal */
 	.docs-list h2 {
 		font-size: 1.2rem;
 		margin-top: 0;
@@ -220,7 +226,6 @@
 		margin-bottom: 0.35rem;
 	}
 
-	/* Címkék */
 	.type-tag {
 		color: #ffffff;
 		font-size: 0.7rem;
@@ -230,11 +235,11 @@
 	}
 
 	.pdf-tag {
-		background-color: #ef4444; /* Piros a PDF-hez */
+		background-color: #ef4444;
 	}
 
 	.ppt-tag {
-		background-color: #d97706; /* Narancssárga/Borostyán a Prezentációhoz */
+		background-color: #d97706;
 	}
 
 	.doc-card h3 {
@@ -258,7 +263,6 @@
 		border-top: 1px solid #334155;
 	}
 
-	/* Gombok */
 	.btn {
 		font-size: 0.825rem;
 		font-weight: 500;
@@ -291,7 +295,6 @@
 		background-color: #64748b;
 	}
 
-	/* Megjelenítő felület */
 	.viewer-section {
 		background-color: #1e293b;
 		border: 1px solid #334155;
@@ -350,7 +353,6 @@
 		border: none;
 	}
 
-	/* PPT helyettesítő kártya a nézőkében */
 	.ppt-placeholder {
 		height: 100%;
 		display: flex;
