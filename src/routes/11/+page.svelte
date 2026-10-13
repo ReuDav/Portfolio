@@ -1,5 +1,5 @@
 <script>
-	// Segédfüggvény: biztosítja, hogy a szóközök és magyar ékezetek érvényes URL-t kapjanak
+	// Segédfüggvény a fájl URL összeállításához
 	function getFileUrl(folder, fileName) {
 		return `/docs/${folder}/${encodeURIComponent(fileName)}`;
 	}
@@ -47,8 +47,11 @@
 		}
 	];
 
-	// Alapértelmezetten kiválasztott tananyag (az első PDF az azonnali előnézethez)
+	// Alapértelmezetten kiválasztott tananyag
 	let selectedDoc = $state(documents[1]);
+
+	// Reaktívan számolt URL a kiválasztott dokumentumhoz
+	let currentUrl = $derived(getFileUrl(selectedDoc.folder, selectedDoc.fileName));
 </script>
 
 <div class="container">
@@ -98,7 +101,6 @@
 
 		<!-- BEÁGYAZOTT MEGJELENÍTŐ -->
 		<section class="viewer-section">
-			{@const currentUrl = getFileUrl(selectedDoc.folder, selectedDoc.fileName)}
 			<div class="viewer-header">
 				<div class="viewer-title">
 					<span class="preview-label">Kiválasztott tananyag:</span>
