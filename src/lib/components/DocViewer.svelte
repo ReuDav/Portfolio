@@ -13,7 +13,12 @@
 	/** @type {{ badge: string, title: string, subtitle: string, documents: DocumentItem[] }} */
 	let { badge, title, subtitle, documents = [] } = $props();
 
-	let selectedDoc = $state(documents[0] || null);
+	let selectedId = $state(null);
+
+	let selectedDoc = $derived(
+		documents.find((d) => d.id === selectedId) || documents[0] || null
+	);
+
 	let currentUrl = $derived(selectedDoc ? encodeURI(selectedDoc.path) : '');
 </script>
 

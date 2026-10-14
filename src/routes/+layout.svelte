@@ -1,6 +1,6 @@
 <script>
 	import favicon from '#lib/assets/favicon.svg';
-
+	import '../app.css'; 
 	/** @type {{children?: import('svelte').Snippet}} */
 	let { children } = $props();
 
@@ -24,7 +24,7 @@
 			<!-- LOGO -->
 			<a href="/" onclick={closeMenu} class="flex items-center gap-2 text-white font-bold text-lg tracking-tight hover:text-slate-100 transition-colors">
 				<span class="text-slate-400 font-mono">&lt;/&gt;</span>
-				<span>Portfólió</span>
+				<span>Legyél Informatikus!</span>
 			</a>
 
 			<!-- HAMBURGER GOMB (MOBIL) -->
