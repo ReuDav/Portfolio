@@ -1,5 +1,5 @@
 <script>
-	import DocViewer from '$lib/components/DocViewer.svelte';
+	import DocViewer from '#lib/components/DocViewer.svelte';
 
 	const documents = [
 		{
