@@ -7,24 +7,24 @@
 			type: 'PDF',
 			title: 'Digitális eszközhasználat és személyiség',
 			subtitle: 'Hardveres alapismeretek, digitális lábnyom és személyiségvédelem',
-			fileName: 'Digitalis eszkozhasznalat es szemelyiseg.pdf',
-			path: '/docs/9/digitalis_kultura/Digitalis eszkozhasznalat es szemelyiseg.pdf'
+			fileName: 'Digitális eszközhasználat és személyiség.pdf',
+			path: '/docs/9/digitalis_kultura/Digitális eszközhasználat és személyiség.pdf'
 		},
 		{
 			id: 'biztonsag',
 			type: 'PDF',
 			title: 'Biztonság a digitális térben',
 			subtitle: 'Kiberbiztonság, jelszókezelés, adathalászat és adatvédelem',
-			fileName: 'Biztonsag a digitalis terben.pdf',
-			path: '/docs/9/digitalis_kultura/Biztonsag a digitalis terben.pdf'
+			fileName: 'Biztonság a digitális térben.pdf',
+			path: '/docs/9/digitalis_kultura/Biztonság a digitális térben.pdf'
 		},
 		{
 			id: 'tudatossag',
 			type: 'PDF',
 			title: 'Digitális Tudatosság',
 			subtitle: 'Kritikus médiafogyasztás, forráskritika és etikus internethasználat',
-			fileName: 'Digitalis Tudatossag.pdf',
-			path: '/docs/9/digitalis_kultura/Digitalis Tudatossag.pdf'
+			fileName: 'Digitális Tudatosság.pdf',
+			path: '/docs/9/digitalis_kultura/Digitális Tudatosság.pdf'
 		}
 	];
 </script>
