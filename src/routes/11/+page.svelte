@@ -1,9 +1,8 @@
-<script>
+<script lang="ts">
 	// Segédfüggvény a fájl URL összeállításához
-	function getFileUrl(folder, fileName) {
-		return `/docs/${folder}/${encodeURIComponent(fileName)}`;
-	}
-
+	function getFileUrl(folder: string, fileName: string) {
+	return `/docs/${folder}/${encodeURIComponent(fileName)}`;
+    }
 	const documents = [
 		{
 			id: 'crud-pptx',

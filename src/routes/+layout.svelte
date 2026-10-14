@@ -1,26 +1,15 @@
 <script>
 	import favicon from '#lib/assets/favicon.svg';
 
-	/** @type {{children: import('svelte').Snippet}} */
+	/** @type {{children?: import('svelte').Snippet}} */
 	let { children } = $props();
 
-	// Reszponzív menü nyitott/zárt állapota Svelte 5 rune-nal
 	let isMenuOpen = $state(false);
-
-	const navItems = [
-		{ href: '/9', label: '9. évfolyam' },
-		{ href: '/10', label: '10. évfolyam' },
-		{ href: '/11', label: '11. évfolyam' },
-		{ href: '/12', label: '12. évfolyam' },
-		{ href: '/esti', label: 'Esti képzés' }
-	];
-
-	function toggleMenu() {
-		isMenuOpen = !isMenuOpen;
-	}
+	let isSubMenuOpen = $state(false);
 
 	function closeMenu() {
 		isMenuOpen = false;
+		isSubMenuOpen = false;
 	}
 </script>
 
@@ -28,208 +17,107 @@
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
-<div class="app-container">
-	<!-- FEJLÉC & NAVIGÁCIÓ -->
-	<header class="header">
-		<div class="header-content">
-			<a href="/" class="brand-logo" onclick={closeMenu}>
-				<span class="logo-accent">&lt;/&gt;</span> Legyél Informatikus!
+<div class="min-h-screen flex flex-col bg-slate-900 text-slate-200 font-sans antialiased">
+	<!-- FEJLÉC -->
+	<header class="sticky top-0 z-50 bg-slate-800/95 backdrop-blur border-b border-slate-700">
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+			<!-- LOGO -->
+			<a href="/" onclick={closeMenu} class="flex items-center gap-2 text-white font-bold text-lg tracking-tight hover:text-slate-100 transition-colors">
+				<span class="text-slate-400 font-mono">&lt;/&gt;</span>
+				<span>Portfólió</span>
 			</a>
 
-			<!-- Hamburger gomb mobilon -->
+			<!-- HAMBURGER GOMB (MOBIL) -->
 			<button
-				class="mobile-toggle"
-				onclick={toggleMenu}
-				aria-label="Menü megnyitása"
-				aria-expanded={isMenuOpen}
+				type="button"
+				class="md:hidden p-2 rounded-lg text-slate-300 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500"
+				onclick={() => (isMenuOpen = !isMenuOpen)}
+				aria-label="Menü kapcsolása"
 			>
-				<span class="bar {isMenuOpen ? 'open' : ''}"></span>
-				<span class="bar {isMenuOpen ? 'open' : ''}"></span>
-				<span class="bar {isMenuOpen ? 'open' : ''}"></span>
+				<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					{#if isMenuOpen}
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+					{:else}
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+					{/if}
+				</svg>
 			</button>
 
-			<!-- Menüpontok -->
-			<nav class="nav-links {isMenuOpen ? 'active' : ''}">
-				{#each navItems as item}
-					<a href={item.href} class="nav-link" onclick={closeMenu}>
-						{item.label}
+			<!-- ASZTALI NAVIGÁCIÓ -->
+			<nav class="hidden md:flex items-center gap-1">
+				<!-- 9. Évfolyam lenyíló almenüvel -->
+				<div class="relative group">
+					<a
+						href="/9"
+						class="flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-md text-slate-300 hover:bg-slate-700 hover:text-white transition-colors"
+					>
+						9. évfolyam
+						<svg class="w-4 h-4 text-slate-400 group-hover:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+						</svg>
 					</a>
-				{/each}
+
+					<div class="absolute left-0 mt-1 w-52 bg-slate-800 border border-slate-700 rounded-lg shadow-xl py-2 hidden group-hover:block transition-all z-50">
+						<a href="/9/digitalis_kultura" class="block px-4 py-2 text-sm text-slate-300 hover:bg-slate-700 hover:text-white">
+							Digitális kultúra
+						</a>
+						<a href="/9/programozas" class="block px-4 py-2 text-sm text-slate-300 hover:bg-slate-700 hover:text-white">
+							Programozás
+						</a>
+					</div>
+				</div>
+
+				<a href="/10" class="px-3 py-2 text-sm font-medium rounded-md text-slate-300 hover:bg-slate-700 hover:text-white transition-colors">10. évfolyam</a>
+				<a href="/11" class="px-3 py-2 text-sm font-medium rounded-md text-slate-300 hover:bg-slate-700 hover:text-white transition-colors">11. évfolyam</a>
+				<a href="/12" class="px-3 py-2 text-sm font-medium rounded-md text-slate-300 hover:bg-slate-700 hover:text-white transition-colors">12. évfolyam</a>
+				<a href="/esti" class="px-3 py-2 text-sm font-medium rounded-md text-slate-300 hover:bg-slate-700 hover:text-white transition-colors">Esti képzés</a>
 			</nav>
 		</div>
+
+		<!-- MOBIL NAVIGÁCIÓ -->
+		{#if isMenuOpen}
+			<div class="md:hidden border-t border-slate-700 bg-slate-800 px-4 pt-2 pb-4 space-y-1">
+				<div>
+					<div class="flex items-center justify-between">
+						<a href="/9" onclick={closeMenu} class="px-3 py-2 text-base font-medium text-slate-300 hover:text-white">
+							9. évfolyam
+						</a>
+						<button
+							type="button"
+							class="p-2 text-slate-400 hover:text-white"
+							onclick={() => (isSubMenuOpen = !isSubMenuOpen)}
+							aria-label="Almenü lenyitása"
+						>
+							<span>{isSubMenuOpen ? '▲' : '▼'}</span>
+						</button>
+					</div>
+					{#if isSubMenuOpen}
+						<div class="pl-4 space-y-1 mt-1 border-l-2 border-slate-700 ml-2">
+							<a href="/9/digitalis_kultura" onclick={closeMenu} class="block px-3 py-2 text-sm rounded-md text-slate-400 hover:text-white hover:bg-slate-700">
+								Digitális kultúra
+							</a>
+							<a href="/9/programozas" onclick={closeMenu} class="block px-3 py-2 text-sm rounded-md text-slate-400 hover:text-white hover:bg-slate-700">
+								Programozás
+							</a>
+						</div>
+					{/if}
+				</div>
+
+				<a href="/10" onclick={closeMenu} class="block px-3 py-2 text-base font-medium rounded-md text-slate-300 hover:bg-slate-700 hover:text-white">10. évfolyam</a>
+				<a href="/11" onclick={closeMenu} class="block px-3 py-2 text-base font-medium rounded-md text-slate-300 hover:bg-slate-700 hover:text-white">11. évfolyam</a>
+				<a href="/12" onclick={closeMenu} class="block px-3 py-2 text-base font-medium rounded-md text-slate-300 hover:bg-slate-700 hover:text-white">12. évfolyam</a>
+				<a href="/esti" onclick={closeMenu} class="block px-3 py-2 text-base font-medium rounded-md text-slate-300 hover:bg-slate-700 hover:text-white">Esti képzés</a>
+			</div>
+		{/if}
 	</header>
 
-	<!-- FŐ TARTALOM -->
-	<main class="main-content">
-		{@render children()}
+	<!-- TARTALOM (Biztonságos snippet renderelés) -->
+	<main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+		{@render children?.()}
 	</main>
 
 	<!-- LÁBLÉC -->
-	<footer class="footer">
-		<p class="copyright">
-			&copy; 2026 Legyél Informatikus. Minden jog fenntartva.
-		</p>
+	<footer class="bg-slate-800 border-t border-slate-700 py-6 text-center text-sm text-slate-400">
+		<p>&copy; 2026 Legyél Informatikus. Minden jog fenntartva.</p>
 	</footer>
 </div>
-
-<style>
-	:global(html, body) {
-		margin: 0;
-		padding: 0;
-		box-sizing: border-box;
-		font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-		background-color: #0f172a; /* Mélysötét szürke / pala háttér */
-		color: #e2e8f0;            /* Világosszürke szövegszín */
-	}
-
-	*, *::before, *::after {
-		box-sizing: inherit;
-	}
-
-	/* Layout elrendezés (Sticky footer) */
-	.app-container {
-		display: flex;
-		flex-direction: column;
-		min-height: 100vh;
-	}
-
-	/* Fejléc */
-	.header {
-		background-color: #1e293b;
-		border-bottom: 1px solid #334155;
-		position: sticky;
-		top: 0;
-		z-index: 50;
-	}
-
-	.header-content {
-		max-width: 1200px;
-		margin: 0 auto;
-		padding: 0.9rem 1.5rem;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-
-	.brand-logo {
-		font-size: 1.25rem;
-		font-weight: 700;
-		text-decoration: none;
-		color: #f8fafc;
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		letter-spacing: -0.02em;
-	}
-
-	.logo-accent {
-		color: #94a3b8;
-		font-family: monospace;
-	}
-
-	/* Linkek asztali nézetben */
-	.nav-links {
-		display: flex;
-		gap: 0.75rem;
-		align-items: center;
-	}
-
-	.nav-link {
-		color: #cbd5e1;
-		text-decoration: none;
-		font-size: 0.925rem;
-		font-weight: 500;
-		padding: 0.45rem 0.85rem;
-		border-radius: 6px;
-		transition: background-color 0.15s ease, color 0.15s ease;
-	}
-
-	.nav-link:hover {
-		background-color: #334155;
-		color: #ffffff;
-	}
-
-	/* Hamburger gomb alapállapotban rejtve */
-	.mobile-toggle {
-		display: none;
-		flex-direction: column;
-		justify-content: space-around;
-		width: 28px;
-		height: 22px;
-		background: transparent;
-		border: none;
-		cursor: pointer;
-		padding: 0;
-	}
-
-	.bar {
-		width: 100%;
-		height: 2px;
-		background-color: #e2e8f0;
-		border-radius: 2px;
-		transition: transform 0.25s ease, opacity 0.25s ease;
-	}
-
-	/* Hamburger animáció nyitáskor */
-	.bar.open:nth-child(1) {
-		transform: translateY(7px) rotate(45deg);
-	}
-	.bar.open:nth-child(2) {
-		opacity: 0;
-	}
-	.bar.open:nth-child(3) {
-		transform: translateY(-7px) rotate(-45deg);
-	}
-
-	/* Fő tartalom konténer */
-	.main-content {
-		flex: 1;
-		max-width: 1200px;
-		width: 100%;
-		margin: 0 auto;
-		padding: 2rem 1.5rem;
-	}
-
-	/* Lábléc */
-	.footer {
-		background-color: #1e293b;
-		border-top: 1px solid #334155;
-		padding: 1.5rem;
-		text-align: center;
-	}
-
-	.copyright {
-		margin: 0;
-		font-size: 0.875rem;
-		color: #94a3b8;
-	}
-
-	/* Reszponzív nézet mobilon */
-	@media (max-width: 768px) {
-		.mobile-toggle {
-			display: flex;
-		}
-
-		.nav-links {
-			display: none;
-			position: absolute;
-			top: 100%;
-			left: 0;
-			right: 0;
-			background-color: #1e293b;
-			border-bottom: 1px solid #334155;
-			flex-direction: column;
-			gap: 0;
-			padding: 0.75rem 1rem;
-		}
-
-		.nav-links.active {
-			display: flex;
-		}
-
-		.nav-link {
-			width: 100%;
-			padding: 0.75rem 1rem;
-		}
-	}
-</style>
