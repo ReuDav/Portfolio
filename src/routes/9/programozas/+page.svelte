@@ -25,6 +25,14 @@
 			subtitle: 'Űrlap tagek és CSS gyakorlati feladatok',
 			fileName: 'Gyakorlo feladatsor HTML.pdf',
 			path: '/docs/9/programozas/Gyakorlo feladatsor HTML.pdf'
+		},
+		{
+			id: 'a-legfontosabb-css-tulajdonsagok',
+			type: 'PDF',
+			title: 'A Legfontosabb CSS Tulajdonságok',
+			subtitle: 'Leggyakrabban használt CSS tulajdonságok ',
+			fileName: 'A Legfontosabb CSS Tulajdonságok.pdf',
+			path: '/docs/9/programozas/A Legfontosabb CSS Tulajdonságok.pdf'
 		}
 	];
 </script>
