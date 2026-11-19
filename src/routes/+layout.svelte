@@ -1,9 +1,10 @@
 <script>
 	import favicon from '$lib/assets/favicon.svg';
-	import '../app.css'; // vagy '$lib/../app.css' helyett használható az relatív `../app.css` ha az `src/app.css`-ben van
-	import { dev } from '$app/environment';
+	import '$lib/../app.css'; // Az src/app.css importálása
+	import { dev } from '$app/env';
 	import { injectAnalytics } from '@vercel/analytics/sveltekit';
 
+	// Vercel Analytics inicializálása
 	injectAnalytics({ mode: dev ? 'development' : 'production' });
 
 	/** @type {{children?: import('svelte').Snippet}} */
@@ -78,7 +79,7 @@
 			</nav>
 		</div>
 
-		<!-- MOBIL NAVIGÁCIÓ (Garantált megjelenés képernyő tetején) -->
+		<!-- MOBIL NAVIGÁCIÓ -->
 		{#if isMenuOpen}
 			<div class="md:hidden border-t border-slate-700 bg-slate-800 px-4 pt-2 pb-4 space-y-1 w-full block">
 				<div>

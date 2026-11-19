@@ -4,19 +4,19 @@ import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-	resolve: {
-		alias: {
-			$lib: '/src/lib'
-		}
-	},
 	plugins: [
 		tailwindcss(),
 		sveltekit({
+			alias: {
+				'$lib': 'src/lib'
+			},
 			compilerOptions: {
 				runes: ({ filename }) =>
 					filename.split(/[/\\]/).includes('node_modules') ? undefined : true
 			},
-			adapter: adapter()
+			adapter: adapter({
+				runtime: 'nodejs24.x'
+			})
 		})
 	]
 });
