@@ -1,6 +1,6 @@
 <script>
-	import favicon from '#lib/assets/favicon.svg';
-	import '../app.css'; 
+	import favicon from '$lib/assets/favicon.svg';
+	import '../app.css'; // vagy '$lib/../app.css' helyett használható az relatív `../app.css` ha az `src/app.css`-ben van
 	import { dev } from '$app/environment';
 	import { injectAnalytics } from '@vercel/analytics/sveltekit';
 
@@ -16,22 +16,15 @@
 		isMenuOpen = false;
 		isSubMenuOpen = false;
 	}
-
-	function toggleMenu() {
-		isMenuOpen = !isMenuOpen;
-		if (!isMenuOpen) {
-			isSubMenuOpen = false;
-		}
-	}
 </script>
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
-<div class="min-h-screen flex flex-col bg-slate-900 text-slate-200 font-sans antialiased">
+<div class="min-h-screen flex flex-col bg-slate-900 text-slate-200 font-sans antialiased relative">
 	<!-- FEJLÉC -->
-	<header class="sticky top-0 z-50 bg-slate-800/95 backdrop-blur border-b border-slate-700">
+	<header class="sticky top-0 z-50 bg-slate-800 border-b border-slate-700 w-full">
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
 			<!-- LOGO -->
 			<a href="/" onclick={closeMenu} class="flex items-center gap-2 text-white font-bold text-lg tracking-tight hover:text-slate-100 transition-colors">
@@ -41,10 +34,10 @@
 
 			<!-- HAMBURGER GOMB (MOBIL) -->
 			<button
-				type="button"
-				class="md:hidden p-2 rounded-lg text-slate-300 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500"
-				onclick={toggleMenu}
-				aria-label="Menü kapcsolása"
+					type="button"
+					class="md:hidden p-2 rounded-lg text-slate-300 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500"
+					onclick={() => { isMenuOpen = !isMenuOpen; }}
+					aria-label="Menü kapcsolása"
 			>
 				<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					{#if isMenuOpen}
@@ -59,8 +52,8 @@
 			<nav class="hidden md:flex items-center gap-1">
 				<div class="relative group">
 					<a
-						href="/9"
-						class="flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-md text-slate-300 hover:bg-slate-700 hover:text-white transition-colors"
+							href="/9"
+							class="flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-md text-slate-300 hover:bg-slate-700 hover:text-white transition-colors"
 					>
 						9. évfolyam
 						<svg class="w-4 h-4 text-slate-400 group-hover:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -85,19 +78,19 @@
 			</nav>
 		</div>
 
-		<!-- MOBIL NAVIGÁCIÓ -->
+		<!-- MOBIL NAVIGÁCIÓ (Garantált megjelenés képernyő tetején) -->
 		{#if isMenuOpen}
-			<div class="md:hidden border-t border-slate-700 bg-slate-800 px-4 pt-2 pb-4 space-y-1">
+			<div class="md:hidden border-t border-slate-700 bg-slate-800 px-4 pt-2 pb-4 space-y-1 w-full block">
 				<div>
-					<div class="flex items-center justify-between">
+					<div class="flex items-center justify-between py-1">
 						<a href="/9" onclick={closeMenu} class="px-3 py-2 text-base font-medium text-slate-300 hover:text-white">
 							9. évfolyam
 						</a>
 						<button
-							type="button"
-							class="p-2 text-slate-400 hover:text-white"
-							onclick={() => (isSubMenuOpen = !isSubMenuOpen)}
-							aria-label="Almenü lenyitása"
+								type="button"
+								class="p-2 text-slate-400 hover:text-white"
+								onclick={() => { isSubMenuOpen = !isSubMenuOpen; }}
+								aria-label="Almenü lenyitása"
 						>
 							<span class="text-xs">{isSubMenuOpen ? '▲' : '▼'}</span>
 						</button>
