@@ -19,7 +19,16 @@
 		documents.find((d) => d.id === selectedId) || documents[0] || null
 	);
 
-	let currentUrl = $derived(selectedDoc ? encodeURI(selectedDoc.path) : '');
+	// Szegmensenként kódolja az útvonalat az ékezetek és szóközök biztonságos kezeléséhez
+	function formatUrl(rawPath) {
+		if (!rawPath) return '';
+		return rawPath
+			.split('/')
+			.map((segment) => encodeURIComponent(segment))
+			.join('/');
+	}
+
+	let currentUrl = $derived(selectedDoc ? formatUrl(selectedDoc.path) : '');
 </script>
 
 <div class="flex flex-col gap-8">
@@ -41,10 +50,10 @@
 			<!-- DOKUMENTUMLISTA -->
 			<div class="lg:col-span-5 space-y-4">
 				<h2 class="text-lg font-semibold text-slate-200">Elérhető tananyagok ({documents.length})</h2>
-				
+
 				<div class="flex flex-col gap-3">
 					{#each documents as doc}
-						{@const docUrl = encodeURI(doc.path)}
+						{@const docUrl = formatUrl(doc.path)}
 						{@const isSelected = selectedDoc?.id === doc.id}
 						{@const isPdf = doc.type !== 'PPT'}
 
@@ -62,10 +71,10 @@
 							<div class="flex gap-2 pt-3 border-t border-slate-700/60">
 								<button
 									type="button"
-									onclick={() => (selectedDoc = doc)}
+									onclick={() => (selectedId = doc.id)}
 									class="flex-1 text-xs font-semibold py-2 px-3 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-200 transition-colors"
 								>
-									{isSelected ? '✓ Megnyitva' : 'Megtekintés'}
+									{isSelected ? '✓ Kiválasztva' : 'Kiválasztás'}
 								</button>
 								<a
 									href={docUrl}
@@ -87,9 +96,11 @@
 						<span class="text-slate-400">Megnyitva:</span>
 						<strong class="text-white ml-1">{selectedDoc?.title}</strong>
 					</div>
-					<a href={currentUrl} target="_blank" rel="noopener noreferrer" class="text-xs text-slate-400 hover:text-white shrink-0">
-						Új lapon ↗
-					</a>
+					{#if currentUrl}
+						<a href={currentUrl} target="_blank" rel="noopener noreferrer" class="text-xs text-slate-400 hover:text-white shrink-0">
+							Megnyitás új lapon ↗
+						</a>
+					{/if}
 				</div>
 
 				<div class="flex-1 w-full h-full bg-slate-950">
@@ -98,14 +109,23 @@
 							<span class="text-5xl">📊</span>
 							<h3 class="text-xl font-bold text-white">PowerPoint Prezentáció</h3>
 							<p class="text-sm text-slate-400 max-w-sm">
-								Ez a formátum közvetlenül nem ágyazható be a böngészőbe. Töltsd le a megtekintéshez!
+								A prezentációk böngészőben közvetlenül nem jeleníthetők meg. Kattints a gombra a letöltéshez:
 							</p>
-							<a href={currentUrl} download={selectedDoc.fileName} class="mt-2 bg-slate-700 hover:bg-slate-600 text-white font-medium text-sm py-2 px-4 rounded-lg transition-colors">
+							<a
+								href={currentUrl}
+								download={selectedDoc.fileName}
+								class="mt-2 bg-amber-600 hover:bg-amber-500 text-white font-medium text-sm py-2.5 px-5 rounded-lg transition-colors shadow-lg inline-block"
+							>
 								⬇ Letöltés ({selectedDoc.fileName})
 							</a>
 						</div>
 					{:else if selectedDoc}
-						<iframe src="{currentUrl}#toolbar=1&view=FitH" title={selectedDoc.title} class="w-full h-full border-none"></iframe>
+						<iframe
+							src="{currentUrl}#toolbar=1&view=FitH"
+							title={selectedDoc.title}
+							type="application/pdf"
+							class="w-full h-full border-none"
+						></iframe>
 					{/if}
 				</div>
 			</div>

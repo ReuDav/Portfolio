@@ -33,6 +33,14 @@
 			subtitle: 'Leggyakrabban használt CSS tulajdonságok összefoglalása',
 			fileName: 'A Legfontosabb CSS Tulajdonságok.pdf',
 			path: '/docs/9/programozas/A Legfontosabb CSS Tulajdonságok.pdf'
+		},
+		{
+			id: 'css-flexbox-grid',
+			type: 'PDF',
+			title: 'CSS Flexbox és Grid Elrendezések',
+			subtitle: 'Modern elrendezési modellek, tengelyek és rácsszerkezetek',
+			fileName: 'CSS Flexbox és Grid Elrendezések.pdf',
+			path: '/docs/9/programozas/CSS Flexbox és Grid Elrendezések.pdf'
 		}
 	];
 </script>

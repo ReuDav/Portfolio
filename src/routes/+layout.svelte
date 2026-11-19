@@ -3,6 +3,7 @@
 	import '../app.css'; 
 	import { dev } from '$app/environment';
 	import { injectAnalytics } from '@vercel/analytics/sveltekit';
+
 	injectAnalytics({ mode: dev ? 'development' : 'production' });
 
 	/** @type {{children?: import('svelte').Snippet}} */
@@ -14,6 +15,13 @@
 	function closeMenu() {
 		isMenuOpen = false;
 		isSubMenuOpen = false;
+	}
+
+	function toggleMenu() {
+		isMenuOpen = !isMenuOpen;
+		if (!isMenuOpen) {
+			isSubMenuOpen = false;
+		}
 	}
 </script>
 
@@ -35,7 +43,7 @@
 			<button
 				type="button"
 				class="md:hidden p-2 rounded-lg text-slate-300 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500"
-				onclick={() => (isMenuOpen = !isMenuOpen)}
+				onclick={toggleMenu}
 				aria-label="Menü kapcsolása"
 			>
 				<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -49,7 +57,6 @@
 
 			<!-- ASZTALI NAVIGÁCIÓ -->
 			<nav class="hidden md:flex items-center gap-1">
-				<!-- 9. Évfolyam lenyíló almenüvel -->
 				<div class="relative group">
 					<a
 						href="/9"
@@ -92,7 +99,7 @@
 							onclick={() => (isSubMenuOpen = !isSubMenuOpen)}
 							aria-label="Almenü lenyitása"
 						>
-							<span>{isSubMenuOpen ? '▲' : '▼'}</span>
+							<span class="text-xs">{isSubMenuOpen ? '▲' : '▼'}</span>
 						</button>
 					</div>
 					{#if isSubMenuOpen}
@@ -115,7 +122,7 @@
 		{/if}
 	</header>
 
-	<!-- TARTALOM (Biztonságos snippet renderelés) -->
+	<!-- TARTALOM -->
 	<main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
 		{@render children?.()}
 	</main>
