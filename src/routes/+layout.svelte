@@ -50,7 +50,8 @@
 
 			<!-- ASZTALI NAVIGÁCIÓ -->
 			<nav class="hidden md:flex items-center gap-1">
-				<div class="relative group">
+				<!-- 9. ÉVFOLYAM LENYÍLÓ MENÜ -->
+				<div class="relative group py-3">
 					<a
 							href="/9"
 							class="flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-md text-slate-300 hover:bg-slate-700 hover:text-white transition-colors"
@@ -61,11 +62,12 @@
 						</svg>
 					</a>
 
-					<div class="absolute left-0 mt-1 w-52 bg-slate-800 border border-slate-700 rounded-lg shadow-xl py-2 hidden group-hover:block transition-all z-50">
-						<a href="/9/digitalis_kultura" class="block px-4 py-2 text-sm text-slate-300 hover:bg-slate-700 hover:text-white">
+					<!-- Lenyíló doboz láthatatlan híd-pufferrel és finom folyamatos átmenettel -->
+					<div class="absolute left-0 top-full -mt-1 w-52 bg-slate-800 border border-slate-700 rounded-lg shadow-xl py-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200 z-50">
+						<a href="/9/digitalis_kultura" class="block px-4 py-2 text-sm text-slate-300 hover:bg-slate-700 hover:text-white transition-colors">
 							Digitális kultúra
 						</a>
-						<a href="/9/programozas" class="block px-4 py-2 text-sm text-slate-300 hover:bg-slate-700 hover:text-white">
+						<a href="/9/programozas" class="block px-4 py-2 text-sm text-slate-300 hover:bg-slate-700 hover:text-white transition-colors">
 							Programozás
 						</a>
 					</div>
