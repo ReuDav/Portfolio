@@ -13,19 +13,24 @@
 	/** @type {{ badge: string, title: string, subtitle: string, documents: DocumentItem[] }} */
 	let { badge, title, subtitle, documents = [] } = $props();
 
+	/** @type {string | null} */
 	let selectedId = $state(null);
 
 	let selectedDoc = $derived(
-		documents.find((d) => d.id === selectedId) || documents[0] || null
+			documents.find((d) => d.id === selectedId) || documents[0] || null
 	);
 
-	// Szegmensenként kódolja az útvonalat az ékezetek és szóközök biztonságos kezeléséhez
+	/**
+	 * Szegmensenként kódolja az útvonalat az ékezetek és szóközök biztonságos kezeléséhez
+	 * @param {string} rawPath
+	 * @returns {string}
+	 */
 	function formatUrl(rawPath) {
 		if (!rawPath) return '';
 		return rawPath
-			.split('/')
-			.map((segment) => encodeURIComponent(segment))
-			.join('/');
+				.split('/')
+				.map((segment) => encodeURIComponent(segment))
+				.join('/');
 	}
 
 	let currentUrl = $derived(selectedDoc ? formatUrl(selectedDoc.path) : '');
@@ -70,16 +75,16 @@
 
 							<div class="flex gap-2 pt-3 border-t border-slate-700/60">
 								<button
-									type="button"
-									onclick={() => (selectedId = doc.id)}
-									class="flex-1 text-xs font-semibold py-2 px-3 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-200 transition-colors"
+										type="button"
+										onclick={() => (selectedId = doc.id)}
+										class="flex-1 text-xs font-semibold py-2 px-3 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-200 transition-colors"
 								>
 									{isSelected ? '✓ Kiválasztva' : 'Kiválasztás'}
 								</button>
 								<a
-									href={docUrl}
-									download={doc.fileName}
-									class="flex-1 text-xs font-semibold py-2 px-3 rounded-lg bg-slate-600 hover:bg-slate-500 text-white text-center transition-colors flex items-center justify-center gap-1"
+										href={docUrl}
+										download={doc.fileName}
+										class="flex-1 text-xs font-semibold py-2 px-3 rounded-lg bg-slate-600 hover:bg-slate-500 text-white text-center transition-colors flex items-center justify-center gap-1"
 								>
 									<span>⬇</span> Letöltés
 								</a>
@@ -112,19 +117,18 @@
 								A prezentációk böngészőben közvetlenül nem jeleníthetők meg. Kattints a gombra a letöltéshez:
 							</p>
 							<a
-								href={currentUrl}
-								download={selectedDoc.fileName}
-								class="mt-2 bg-amber-600 hover:bg-amber-500 text-white font-medium text-sm py-2.5 px-5 rounded-lg transition-colors shadow-lg inline-block"
+									href={currentUrl}
+									download={selectedDoc.fileName}
+									class="mt-2 bg-amber-600 hover:bg-amber-500 text-white font-medium text-sm py-2.5 px-5 rounded-lg transition-colors shadow-lg inline-block"
 							>
 								⬇ Letöltés ({selectedDoc.fileName})
 							</a>
 						</div>
 					{:else if selectedDoc}
 						<iframe
-							src="{currentUrl}#toolbar=1&view=FitH"
-							title={selectedDoc.title}
-							type="application/pdf"
-							class="w-full h-full border-none"
+								src={currentUrl}
+								title={selectedDoc.title}
+								class="w-full h-full border-none"
 						></iframe>
 					{/if}
 				</div>

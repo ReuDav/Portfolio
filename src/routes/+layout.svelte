@@ -1,11 +1,10 @@
 <script>
-	import favicon from '$lib/assets/favicon.svg';
-	import '$lib/../app.css'; // Az src/app.css importálása
-	import { dev } from '$app/env';
-	import { injectAnalytics } from '@vercel/analytics/sveltekit';
+	import favicon from '#lib/assets/favicon.svg';
+	import '../app.css';
+	import { inject } from '@vercel/analytics';
 
-	// Vercel Analytics inicializálása
-	injectAnalytics({ mode: dev ? 'development' : 'production' });
+	// Paraméterek és .env nélkül – a Vercel automatikusan intézi
+	inject();
 
 	/** @type {{children?: import('svelte').Snippet}} */
 	let { children } = $props();
